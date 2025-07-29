@@ -47,14 +47,14 @@ var __async = (__this, __arguments, generator) => {
   });
 };
 
-// src/index.ts
-var index_exports = {};
-__export(index_exports, {
+// src/lib/index.ts
+var lib_exports = {};
+__export(lib_exports, {
   FirestoreDocument: () => FirestoreDocument,
   buildSchema: () => buildSchema,
   initializeDatabase: () => initializeDatabase
 });
-module.exports = __toCommonJS(index_exports);
+module.exports = __toCommonJS(lib_exports);
 
 // src/lib/FirestoreDocument.ts
 var import_firebase_admin = __toESM(require("firebase-admin"));

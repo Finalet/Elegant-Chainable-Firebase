@@ -1,1 +1,2 @@
-export { FirestoreDocument } from "./FirestoreDocument";
+export * from "./FirestoreDocument";
+export * from "./Database";

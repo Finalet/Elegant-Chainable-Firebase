@@ -2,8 +2,7 @@ import {
   FirestoreDocument,
   buildSchema,
   initializeDatabase
-} from "./chunk-2ZLSWZ4K.mjs";
-import "./chunk-6OLNVKT6.mjs";
+} from "../chunk-2ZLSWZ4K.mjs";
 export {
   FirestoreDocument,
   buildSchema,
