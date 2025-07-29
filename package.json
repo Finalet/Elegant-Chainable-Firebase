@@ -1,5 +1,5 @@
 {
-  "name": "library-test",
+  "name": "elegant-chainable-firebase",
   "version": "0.0.1",
   "exports": {
     ".": {
@@ -17,6 +17,14 @@
     "build": "npm run lint && tsup",
     "lint": "eslint ."
   },
+  "files": [
+    "./dist"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Finalet/Elegant-Chainable-Firebase.git"
+  },
+  "homepage": "https://github.com/Finalet/Elegant-Chainable-Firebase#readme",
   "keywords": [],
   "author": "",
   "license": "ISC",
