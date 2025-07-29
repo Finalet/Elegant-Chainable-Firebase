@@ -1,0 +1,1 @@
+export { FirestoreDocument } from "./FirestoreDocument";
