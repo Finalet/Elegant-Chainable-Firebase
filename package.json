@@ -1,9 +1,13 @@
 {
   "name": "elegant-chainable-firebase",
+  "description": "Chainable typescript Firestore and Storage Admin SDK wrapper for Node.js.",
   "version": "0.0.3",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
   "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -14,29 +18,27 @@
       "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.mjs",
       "require": "./dist/types/index.js"
-    },
-    "./lib": {
-      "types": "./dist/lib/index.d.ts",
-      "import": "./dist/lib/index.mjs",
-      "require": "./dist/lib/index.js"
     }
   },
   "scripts": {
     "build": "npm run lint && tsup",
     "lint": "eslint ."
   },
-  "files": [
-    "./dist"
+  "keywords": [
+    "firebase",
+    "firestore",
+    "storage",
+    "admin-sdk",
+    "typescript",
+    "chainable"
   ],
+  "author": "Grant Oganyan",
+  "license": "Apache-2.0",
+  "homepage": "https://github.com/Finalet/Elegant-Chainable-Firebase",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Finalet/Elegant-Chainable-Firebase.git"
   },
-  "homepage": "https://github.com/Finalet/Elegant-Chainable-Firebase#readme",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "eslint": "^9.32.0",

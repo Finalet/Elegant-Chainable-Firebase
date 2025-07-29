@@ -27,7 +27,7 @@ type ExtractDocNames<T, D extends Prev[number] = 6> = [D] extends [never]
     }[keyof T]
   : never;
 
-export type DefineDocumentData<TSchema, T extends Partial<Record<ExtractDocNames<TSchema>, any>>> = T;
+export type DefineDocumentTypes<TSchema, T extends Partial<Record<ExtractDocNames<TSchema>, any>>> = T;
 
 // --- FIRESTORE DATABASE TYPE ---
 
