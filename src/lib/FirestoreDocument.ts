@@ -22,7 +22,7 @@ export class FirestoreDocument<T> {
   }
 
   async save() {
-    // TO-DO: Implement save logic
+    // TO-DO: Implement save logic again.
   }
 }
 
