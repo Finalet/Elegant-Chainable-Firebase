@@ -20,6 +20,10 @@ export class FirestoreDocument<T> {
   async fetch(): Promise<T> {
     return (await this.ref.get()).data() as T;
   }
+
+  async save() {
+    // TO-DO: Implement save logic
+  }
 }
 
 const firestore = () => {
