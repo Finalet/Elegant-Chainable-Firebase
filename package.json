@@ -22,7 +22,7 @@
   },
   "scripts": {
     "build": "npm run lint && tsup",
-    "lint": "eslint ."
+    "lint": "eslint src"
   },
   "keywords": [
     "firebase",
