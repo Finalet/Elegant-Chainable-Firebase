@@ -1,7 +1,7 @@
 {
   "name": "elegant-chainable-firebase",
   "description": "Chainable typescript Firestore and Storage Admin SDK wrapper for Node.js.",
-  "version": "1.0.0",
+  "version": "0.0.3",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
