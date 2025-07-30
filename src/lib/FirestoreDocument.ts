@@ -21,9 +21,9 @@ export class FirestoreDocument<T> {
     return (await this.ref.get()).data() as T;
   }
 
-  async save() {
-    // TO-DO: Implement save logic again.
-  }
+  async save() {}
+
+  async updateField() {}
 }
 
 const firestore = () => {
