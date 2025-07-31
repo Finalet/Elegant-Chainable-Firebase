@@ -1,6 +1,6 @@
 {
   "name": "elegant-chainable-firebase",
-  "description": "Chainable typescript Firestore and Storage Admin SDK wrapper for Node.js.",
+  "description": "Chainable, typed Firestore and Storage Admin SDK wrapper for Node.js.",
   "version": "0.0.4",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -30,6 +30,7 @@
     "storage",
     "admin-sdk",
     "typescript",
+    "typed",
     "chainable"
   ],
   "author": "Grant Oganyan",

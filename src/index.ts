@@ -1,2 +1,2 @@
-export * from "./lib";
+export * from "./firestore";
 export { DefineDocumentTypes } from "./types/Types";
