@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import { FirestoreSchemaNode } from "../types/Types";
+import { FieldsOf, FieldTypeAtPath, FirestoreSchemaNode } from "../types/Types";
 
 export class FirestoreDocument<T extends { [key: string]: any }> {
   ref: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
@@ -23,7 +23,7 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
 
   async fetch(): Promise<T> {
     const doc = await this.ref.get();
-    return this.itemFromDoc(doc);
+    return objectFromFirestoreDoc<T>(doc);
   }
 
   async save(object: T) {
@@ -40,7 +40,7 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
     return doc.exists;
   }
 
-  async updateField(field: LeavesOf<T>, value: any, deleteIfEmpty: boolean = true, deleteEmptyParents: boolean = true) {
+  async updateField<K extends FieldsOf<T>>(field: K, value: FieldTypeAtPath<T, K>, deleteIfEmpty: boolean = true, deleteEmptyParents: boolean = true) {
     const shouldDelete = !value || (Array.isArray(value) && value.length === 0) || (typeof value === "object" && Object.keys(value).length === 0);
     await this.ref.update({
       [field]: shouldDelete && deleteIfEmpty ? admin.firestore.FieldValue.delete() : value,
@@ -62,16 +62,16 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
       }
     }
   }
-
-  itemFromDoc(doc: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>) {
-    if (!doc.exists) throw new Error(`Document at ${doc.ref.path} does not exist.`);
-    const data = doc.data();
-    if (!data) throw new Error(`Document at ${doc.ref.path} has no data.`);
-
-    convertTimestampsToDates(data);
-    return data as T;
-  }
 }
+
+export const objectFromFirestoreDoc = <T>(doc: FirebaseFirestore.DocumentSnapshot<FirebaseFirestore.DocumentData>): T => {
+  if (!doc.exists) throw new Error(`Document at ${doc.ref.path} does not exist.`);
+  const data = doc.data();
+  if (!data) throw new Error(`Document at ${doc.ref.path} has no data.`);
+
+  convertTimestampsToDates(data);
+  return data as T;
+};
 
 function isFirestoreTimestamp(obj: any): obj is { _seconds: number; _nanoseconds: number } {
   return !!obj && typeof obj === "object" && "_seconds" in obj && "_nanoseconds" in obj && typeof obj._seconds === "number" && typeof obj._nanoseconds === "number";
@@ -99,13 +99,3 @@ const firestore = () => {
 
   throw new Error("Firebase app is not initialized. Please initialize Firebase first.");
 };
-
-type Leaves<T> = T extends object
-  ? {
-      [K in keyof T]: `${Exclude<K, symbol>}${Leaves<T[K]> extends never ? "" : T[K] extends Date | undefined ? "" : `.${Leaves<T[K]>}`}`;
-    }[keyof T]
-  : never;
-
-type ExcludeUndefined<T> = T extends `${infer R}.undefined` | undefined ? never : T; // eslint-disable-line
-
-type LeavesOf<T> = ExcludeUndefined<Leaves<T>>;

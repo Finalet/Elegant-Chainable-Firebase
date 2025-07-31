@@ -49,3 +49,29 @@ type FirestoreAPI<TNode extends FirestoreSchemaNode, TTypesMap extends Firestore
 export type FirestoreDatabase<TSchema extends FirestoreSchema, TTypesMap extends FirestoreSchemaTypes> = {
   [K in keyof TSchema as TSchema[K]["doc"] extends keyof TTypesMap ? TSchema[K]["doc"] : never]: FirestoreAPI<TSchema[K], TTypesMap>;
 };
+
+// --- FirebaseDocument.updateField() types ---
+
+// Type utility to extract the leaves of an object as a dot-separated string
+type IsPlainObject<T> = T extends object ? (T extends Date ? false : T extends Array<any> ? false : true) : false;
+
+type Leaves<T> = {
+  [K in keyof T]: K extends string
+    ? IsPlainObject<T[K]> extends true
+      ?
+          | K // include the object path itself
+          | `${K}.${Leaves<T[K]>}` // and recurse for nested paths
+      : K // primitive leaf
+    : never;
+}[keyof T];
+
+type ExcludeUndefined<T> = T extends `${string}.undefined` | undefined ? never : T;
+
+export type FieldsOf<T> = ExcludeUndefined<Leaves<T>>;
+
+// Type utility to finding the correct value type of a path in an object
+type Split<S extends string, D extends string = "."> = S extends `${infer T}${D}${infer U}` ? [T, ...Split<U, D>] : [S];
+
+type PathValueAtPath<T, Path extends string[]> = Path extends [infer Head, ...infer Rest] ? (Head extends keyof T ? (Rest extends string[] ? PathValueAtPath<T[Head], Rest> : never) : never) : T;
+
+export type FieldTypeAtPath<T, P extends string> = PathValueAtPath<T, Split<P>>;
