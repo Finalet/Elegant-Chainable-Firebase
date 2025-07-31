@@ -1,0 +1,58 @@
+import admin from "firebase-admin";
+import { DownloadOptions, File, SaveOptions } from "@google-cloud/storage";
+import { getDownloadURL } from "firebase-admin/storage";
+import path from "path";
+
+export class StorageFile {
+  file: File;
+
+  constructor(public path: string) {
+    this.file = bucket().file(path);
+  }
+
+  upload(fileBuffer: Buffer, options?: SaveOptions) {
+    return this.file.save(fileBuffer, options);
+  }
+
+  delete() {
+    return this.file.delete();
+  }
+
+  download(options: DownloadOptions) {
+    return this.file.download(options);
+  }
+
+  downloadUrl() {
+    return getDownloadURL(this.file);
+  }
+
+  getUniqueFileName() {
+    return getUniqueFileName(this.path);
+  }
+}
+
+export const getUniqueFileName = async (fileWithPath: string): Promise<string> => {
+  const pathArray = fileWithPath.split("/");
+  const originalFileName = pathArray.pop();
+  if (!originalFileName) throw new Error("Can't check if file name is unique. Invalid file path.");
+
+  const filePath = pathArray.join("/");
+  const parsed = path.parse(originalFileName);
+  const fileExtension = parsed.ext;
+  let fileName = parsed.name;
+
+  let step = 0;
+  while ((await bucket().file(`${filePath}/${fileName}${fileExtension}`).exists())[0]) {
+    step++;
+    fileName = `${fileName}-${step}`;
+  }
+  return `${fileName}${fileExtension}`;
+};
+
+const bucket = () => {
+  if (admin.apps.length > 0) {
+    return admin.app().storage().bucket();
+  }
+
+  throw new Error("Firebase app is not initialized. Please initialize Firebase first.");
+};

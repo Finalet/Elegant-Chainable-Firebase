@@ -1,8 +1,8 @@
 import { FirestoreDocument } from "./FirestoreDocument";
-import { FirestoreDatabase, FirestoreSchema, FirestoreSchemaNode, FirestoreSchemaTypes } from "../types/Types";
+import { FirestoreDatabase, FirestoreSchema, FirestoreSchemaNode, FirestoreSchemaTypes } from "../types/FirestoreTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function initializeDatabase<TSchema extends FirestoreSchema, TTypesMap extends FirestoreSchemaTypes>(schema: TSchema, types?: TTypesMap): FirestoreDatabase<TSchema, TTypesMap> {
+export function initializeFirestore<TSchema extends FirestoreSchema, TTypesMap extends FirestoreSchemaTypes>(schema: TSchema, types?: TTypesMap): FirestoreDatabase<TSchema, TTypesMap> {
   const api: any = {};
   Object.entries(schema).forEach(([key, node]) => {
     if (typeof node === "object" && node !== null && "doc" in node) {
@@ -13,6 +13,6 @@ export function initializeDatabase<TSchema extends FirestoreSchema, TTypesMap ex
   return api;
 }
 
-export function buildSchema<T extends FirestoreSchema>(schema: T) {
+export function buildFirestoreSchema<T extends FirestoreSchema>(schema: T) {
   return schema;
 }
