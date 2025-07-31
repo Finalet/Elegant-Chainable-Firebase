@@ -1,2 +1,2 @@
 export * from "./FirestoreDocument";
-export * from "./Database";
+export * from "./Firestore";

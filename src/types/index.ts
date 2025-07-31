@@ -1,1 +1,1 @@
-export { FirestoreSchema, FirestoreSchemaNode, FirestoreDatabase } from "./Types";
+export { FirestoreSchema, FirestoreSchemaNode, FirestoreDatabase } from "./FirestoreTypes";

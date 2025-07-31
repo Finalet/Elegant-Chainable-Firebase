@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import { FieldsOf, FieldTypeAtPath, FirestoreSchemaNode } from "../types/Types";
+import { FieldsOf, FieldTypeAtPath, FirestoreSchemaNode } from "../types/FirestoreTypes";
 
 export class FirestoreDocument<T extends { [key: string]: any }> {
   ref: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
