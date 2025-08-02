@@ -1,15 +1,27 @@
 import { StorageFile, StorageFolder } from "./StorageFile";
 import { StorageSchema, StorageSchemaNode } from "./types/StorageTypes";
 
-export const folder = <T extends Record<string, StorageSchemaNode>>(path: string, children?: T): StorageFolder & T => {
-  const folder = new StorageFolder(path);
-  Object.assign(folder, children);
-  return folder as StorageFolder & T;
-};
+export function folder<T extends Record<string, StorageSchemaNode>>(path: string, children?: T): StorageFolder & T;
+export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, Class: new (...args: any[]) => C, children?: T): C & T;
+export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, ClassOrChildren?: (new (...args: any[]) => C) | T, maybeChildren?: T): C & T {
+  let Class: new (...args: any[]) => C = StorageFolder as any;
+  let children: T | undefined;
 
-export const file = (path: string) => {
-  return new StorageFile(path);
-};
+  if (typeof ClassOrChildren === "function") {
+    Class = ClassOrChildren;
+    children = maybeChildren;
+  } else {
+    children = ClassOrChildren;
+  }
+
+  const folder = new Class(path);
+  Object.assign(folder, children);
+  return folder as C & T;
+}
+
+export function file<T extends StorageFile>(path: string, Class: new (...args: any[]) => T = StorageFile as any) {
+  return new Class(path);
+}
 
 export function buildStorageSchema<T extends StorageSchema>(schema: T) {
   return schema;
@@ -25,12 +37,10 @@ export function initializeStorage<TSchema extends StorageSchema>(schema: TSchema
 
 function processNode(node: StorageSchemaNode, parentPath: string): StorageSchemaNode {
   if (typeof node === "function") {
-    return (id: string) => {
-      const result = node(id);
-      if (result instanceof StorageFile) {
-        result.path = normalizePath(`${parentPath}/${result.path}`);
-      } else if (result instanceof StorageFolder) {
-        result.path = normalizePath(`${parentPath}/${result.path}`);
+    return (path: string) => {
+      const result = node(path);
+      result.path = normalizePath(`${parentPath}/${result.path}`);
+      if (result instanceof StorageFolder) {
         processFolder(result, result.path);
       }
       return result;

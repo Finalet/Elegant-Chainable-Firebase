@@ -1,7 +1,7 @@
 import admin from "firebase-admin";
 import { DownloadOptions, File, SaveOptions } from "@google-cloud/storage";
 import { getDownloadURL } from "firebase-admin/storage";
-import path from "path";
+import nodePath from "path";
 
 export class StorageFile {
   file: File;
@@ -40,7 +40,7 @@ export class StorageFolder {
   }
 
   file(name: string) {
-    return new StorageFile(`${path}/${name}`);
+    return new StorageFile(`${this.path}/${name}`);
   }
 }
 
@@ -50,7 +50,7 @@ export const getUniqueFileName = async (fileWithPath: string): Promise<string> =
   if (!originalFileName) throw new Error("Can't check if file name is unique. Invalid file path.");
 
   const filePath = pathArray.join("/");
-  const parsed = path.parse(originalFileName);
+  const parsed = nodePath.parse(originalFileName);
   const fileExtension = parsed.ext;
   let fileName = parsed.name;
 
