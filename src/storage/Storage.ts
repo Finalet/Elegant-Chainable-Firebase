@@ -61,20 +61,3 @@ function processFolder(folder: StorageFolder, currentPath: string) {
 function normalizePath(path: string): string {
   return path.replace(/\/+/g, "/").replace(/\/$/, ""); // collapse slashes and remove trailing
 }
-
-const schema = buildStorageSchema({
-  presskit: (presskitID: string) =>
-    folder(`presskits/${presskitID}`, {
-      images: folder(`/images`),
-      image: (imageID: string) => file(`/images/${imageID}`),
-      logo: (logoID: string) => file(`/logos/${logoID}`),
-      misc: {
-        vault: {
-          secret: (secretID: string) => file(`/misc/vault/secrets/${secretID}`),
-        },
-      },
-    }),
-});
-
-const storage = initializeStorage(schema);
-console.log(storage.presskit("presskitID"));
