@@ -1,3 +1,10 @@
+## [0.2.1](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.0...v0.2.1) (2025-08-02)
+
+
+### Bug Fixes
+
+* imports ([07667d8](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/07667d84ad6eb7b14db64616d5a4fa247d261a07))
+
 # [0.2.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.1.0...v0.2.0) (2025-08-02)
 
 
