@@ -1,3 +1,10 @@
+# [0.2.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.1.0...v0.2.0) (2025-08-02)
+
+
+### Features
+
+* storage ([64009d7](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/64009d7e35482fef566c01b91314978b7f1b6e93))
+
 # [0.1.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.0.4...v0.1.0) (2025-07-31)
 
 
