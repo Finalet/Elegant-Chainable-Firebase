@@ -32,6 +32,18 @@ export class StorageFile {
   }
 }
 
+export class StorageFolder {
+  constructor(public path: string) {}
+
+  delete() {
+    return bucket().deleteFiles({ prefix: `${this.path}/` });
+  }
+
+  file(name: string) {
+    return new StorageFile(`${path}/${name}`);
+  }
+}
+
 export const getUniqueFileName = async (fileWithPath: string): Promise<string> => {
   const pathArray = fileWithPath.split("/");
   const originalFileName = pathArray.pop();

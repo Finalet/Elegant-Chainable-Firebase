@@ -1,5 +1,3 @@
-<<<<<<< Updated upstream
-=======
 import { StorageFile, StorageFolder } from "./StorageFile";
 import { StorageSchema, StorageSchemaNode } from "./types/StorageTypes";
 
@@ -80,4 +78,3 @@ const schema = buildStorageSchema({
 
 const storage = initializeStorage(schema);
 console.log(storage.presskit("presskitID"));
->>>>>>> Stashed changes
