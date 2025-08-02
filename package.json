@@ -2,22 +2,32 @@
   "name": "elegant-chainable-firebase",
   "description": "Chainable, typed Firestore and Storage Admin SDK wrapper for Node.js.",
   "version": "0.1.0",
-  "main": "./dist/index.js",
-  "module": "./dist/index.mjs",
-  "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+    "./firestore": {
+      "types": "./dist/firestore/index.d.ts",
+      "import": "./dist/firestore/index.mjs",
+      "require": "./dist/firestore/index.js"
     },
-    "./types": {
-      "types": "./dist/types/index.d.ts",
-      "import": "./dist/types/index.mjs",
-      "require": "./dist/types/index.js"
+    "./firestore/types": {
+      "types": "./dist/firestore/types/index.d.ts",
+      "import": "./dist/firestore/types/index.mjs",
+      "require": "./dist/firestore/types/index.js"
+    },
+    "./storage": {
+      "types": "./dist/storage/index.d.ts",
+      "import": "./dist/storage/index.mjs",
+      "require": "./dist/storage/index.js"
+    },
+    "./storage/types": {
+      "types": "./dist/storage/types/index.d.ts",
+      "import": "./dist/storage/types/index.mjs",
+      "require": "./dist/storage/types/index.js"
     }
   },
   "scripts": {

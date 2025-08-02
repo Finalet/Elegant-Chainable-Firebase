@@ -1,5 +1,5 @@
 import { FirestoreDocument } from "./FirestoreDocument";
-import { FirestoreDatabase, FirestoreSchema, FirestoreSchemaNode, FirestoreSchemaTypes } from "../types/FirestoreTypes";
+import { FirestoreDatabase, FirestoreSchema, FirestoreSchemaNode, FirestoreSchemaTypes } from "./types/FirestoreTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function initializeFirestore<TSchema extends FirestoreSchema, TTypesMap extends FirestoreSchemaTypes>(schema: TSchema, types?: TTypesMap): FirestoreDatabase<TSchema, TTypesMap> {

@@ -1,4 +1,4 @@
-import { FirestoreDocument } from "../firestore/FirestoreDocument";
+import { FirestoreDocument } from "../FirestoreDocument";
 
 // --- SCHEMA DEFINITION ---
 export type FirestoreSchema = {

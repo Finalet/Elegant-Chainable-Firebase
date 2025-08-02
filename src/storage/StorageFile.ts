@@ -10,24 +10,25 @@ export class StorageFile {
     this.file = bucket().file(path);
   }
 
-  upload(fileBuffer: Buffer, options?: SaveOptions) {
-    return this.file.save(fileBuffer, options);
+  async upload(fileBuffer: Buffer, options?: SaveOptions) {
+    return await this.file.save(fileBuffer, options);
   }
 
-  delete() {
-    return this.file.delete();
+  async delete() {
+    return await this.file.delete();
   }
 
-  download(options: DownloadOptions) {
-    return this.file.download(options);
+  async download(options: DownloadOptions) {
+    const [buffer] = await this.file.download(options);
+    return buffer;
   }
 
-  downloadUrl() {
-    return getDownloadURL(this.file);
+  async downloadUrl() {
+    return await getDownloadURL(this.file);
   }
 
-  getUniqueFileName() {
-    return getUniqueFileName(this.path);
+  async getUniqueFileName() {
+    return await getUniqueFileName(this.path);
   }
 }
 
