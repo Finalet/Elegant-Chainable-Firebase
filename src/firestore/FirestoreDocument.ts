@@ -1,9 +1,10 @@
 import admin from "firebase-admin";
+import { DocumentReference, DocumentData, CollectionReference } from "firebase-admin/firestore";
 import { FieldsOf, FieldTypeAtPath, FirestoreSchemaNode } from "./types/FirestoreTypes";
 
 export class FirestoreDocument<T extends { [key: string]: any }> {
-  ref: FirebaseFirestore.DocumentReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
-  collection: FirebaseFirestore.CollectionReference<FirebaseFirestore.DocumentData, FirebaseFirestore.DocumentData>;
+  ref: DocumentReference<DocumentData, DocumentData>;
+  collection: CollectionReference<DocumentData, DocumentData>;
 
   constructor(documentPath: string, childNode: FirestoreSchemaNode) {
     this.ref = firestore().doc(documentPath);
