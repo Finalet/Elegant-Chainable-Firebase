@@ -11,11 +11,6 @@
       "import": "./dist/firestore/index.mjs",
       "require": "./dist/firestore/index.js"
     },
-    "./firestore/types": {
-      "types": "./dist/firestore/types/index.d.ts",
-      "import": "./dist/firestore/types/index.mjs",
-      "require": "./dist/firestore/types/index.js"
-    },
     "./storage": {
       "types": "./dist/storage/index.d.ts",
       "import": "./dist/storage/index.mjs",
@@ -25,6 +20,11 @@
       "types": "./dist/storage/types/index.d.ts",
       "import": "./dist/storage/types/index.mjs",
       "require": "./dist/storage/types/index.js"
+    },
+    "./firestore/types": {
+      "types": "./dist/firestore/types/index.d.ts",
+      "import": "./dist/firestore/types/index.mjs",
+      "require": "./dist/firestore/types/index.js"
     }
   },
   "scripts": {
