@@ -1,6 +1,12 @@
-import { StorageFile, StorageFolder } from "./StorageFile";
+import { StorageFile, StorageFolder } from "./StorageFileFolder";
 import { StorageSchema, StorageSchemaNode } from "./types/StorageTypes";
 
+/**
+ * Helper function for defining the Firebase Storage schema for a file.
+ * @param path Relative path to the folder.
+ * @param Class (Optional) A Class that inherits StorageFolder. Used this to repalce the default class with your own to extend functionality as needed.
+ * @param children (Optional) Schema for child files that this folder contains.
+ */
 export function folder<T extends Record<string, StorageSchemaNode>>(path: string, children?: T): StorageFolder & T;
 export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, Class: new (...args: any[]) => C, children?: T): C & T;
 export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, ClassOrChildren?: (new (...args: any[]) => C) | T, maybeChildren?: T): C & T {
@@ -19,14 +25,30 @@ export function folder<T extends Record<string, StorageSchemaNode>, C extends St
   return folder as C & T;
 }
 
+/**
+ * Helper function for defining the Firebase Storage schema for a folder.
+ * @param path Relative path to the file.
+ * @param Class (Optional) A Class that inherits StorageFile. Used this to repalce the default class with your own to extend functionality as needed.
+ * @returns
+ */
 export function file<T extends StorageFile>(path: string, Class: new (...args: any[]) => T = StorageFile as any) {
   return new Class(path);
 }
 
+/**
+ * Helper function to define the Firebase Storage schema.
+ * @param schema Your schema.
+ * @returns A properly typed schema.
+ */
 export function buildStorageSchema<T extends StorageSchema>(schema: T) {
   return schema;
 }
 
+/**
+ * Initializes chainable Firebase Storage database using provided schema.
+ * @param schema Your Firebase Storage schema.
+ * @returns An object for accessing Firebase Storage.
+ */
 export function initializeStorage<TSchema extends StorageSchema>(schema: TSchema): TSchema {
   const result: TSchema = {} as TSchema;
   for (const key in schema) {

@@ -1,4 +1,4 @@
-import { StorageFile, StorageFolder } from "../StorageFile";
+import { StorageFile, StorageFolder } from "../StorageFileFolder";
 
 export type StorageDatabase = StorageSchema;
 export type StorageSchema = {

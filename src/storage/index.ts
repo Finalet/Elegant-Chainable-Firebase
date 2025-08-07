@@ -1,2 +1,2 @@
 export * from "./Storage";
-export * from "./StorageFile";
+export * from "./StorageFileFolder";

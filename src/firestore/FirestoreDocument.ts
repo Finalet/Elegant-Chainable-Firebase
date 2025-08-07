@@ -2,6 +2,9 @@ import admin from "firebase-admin";
 import { DocumentReference, DocumentData, CollectionReference } from "firebase-admin/firestore";
 import { FieldsOf, FieldTypeAtPath, FirestoreSchemaNode } from "./types/FirestoreTypes";
 
+/**
+ * Main class used to access and manipulate Firestore documents. Inherit this class to extend with custom functionality as needed.
+ */
 export class FirestoreDocument<T extends { [key: string]: any }> {
   ref: DocumentReference<DocumentData, DocumentData>;
   collection: CollectionReference<DocumentData, DocumentData>;

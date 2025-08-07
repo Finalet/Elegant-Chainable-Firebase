@@ -3,6 +3,9 @@ import { DownloadOptions, File, SaveOptions } from "@google-cloud/storage";
 import { getDownloadURL } from "firebase-admin/storage";
 import nodePath from "path";
 
+/**
+ * Main class used to access and manipulate Firestore Storage files. Inherit this class to extend with custom functionality as needed.
+ */
 export class StorageFile {
   file: File;
 
@@ -32,18 +35,30 @@ export class StorageFile {
   }
 }
 
+/**
+ * Main class used to access and manipulate the Firestore Storage folders. Inherit this class to extend with custom functionality as needed.
+ */
 export class StorageFolder {
   constructor(public path: string) {}
 
-  delete() {
-    return bucket().deleteFiles({ prefix: `${this.path}/` });
+  async delete() {
+    return await bucket().deleteFiles({ prefix: `${this.path}/` });
   }
 
   file(name: string) {
     return new StorageFile(`${this.path}/${name}`);
   }
+
+  async getUniqueFileName(name: string) {
+    return await getUniqueFileName(`${this.path}/${name}`);
+  }
 }
 
+/**
+ * Generate a unique file name, given a desired path.
+ * @param fileWithPath Full path to the file.
+ * @returns string path with a unique file name at the specified path.
+ */
 export const getUniqueFileName = async (fileWithPath: string): Promise<string> => {
   const pathArray = fileWithPath.split("/");
   const originalFileName = pathArray.pop();
