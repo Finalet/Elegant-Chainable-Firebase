@@ -80,7 +80,7 @@ function processDescriptor(app: admin.app.App, descriptor: FileDescriptor | Fold
 }
 
 function normalizePath(path: string): string {
-  return path.replace(/\/+/g, "/").replace(/\/$/, ""); // collapse slashes and remove trailing
+  return path.replace(/\/+/g, "/").replace(/^\/|\/$/g, "");
 }
 
 /**
