@@ -1,3 +1,10 @@
+## [0.2.7](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.6...v0.2.7) (2025-08-07)
+
+
+### Bug Fixes
+
+* storage database is done ([5bdda14](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/5bdda14bbc36948d5fadc49aae179929b183cae9))
+
 ## [0.2.6](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.5...v0.2.6) (2025-08-07)
 
 
