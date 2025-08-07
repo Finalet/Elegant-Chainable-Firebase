@@ -1,3 +1,10 @@
+## [0.2.6](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.5...v0.2.6) (2025-08-07)
+
+
+### Bug Fixes
+
+* providing own admin sdk instance for firestore ([50a90ea](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/50a90ea697b04707e9c730c7bf29d507df33a4d4))
+
 ## [0.2.5](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.4...v0.2.5) (2025-08-02)
 
 
