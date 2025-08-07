@@ -9,8 +9,8 @@ import nodePath from "path";
 export class StorageFile {
   file: File;
 
-  constructor(public path: string) {
-    this.file = bucket().file(path);
+  constructor(public app: admin.app.App, public path: string) {
+    this.file = this.app.storage().bucket().file(path);
   }
 
   async upload(fileBuffer: Buffer, options?: SaveOptions) {
@@ -26,12 +26,12 @@ export class StorageFile {
     return buffer;
   }
 
-  async downloadUrl() {
+  async getDownloadUrl() {
     return await getDownloadURL(this.file);
   }
 
   async getUniqueFileName() {
-    return await getUniqueFileName(this.path);
+    return await getUniqueFileName(this.app, this.path);
   }
 }
 
@@ -39,18 +39,21 @@ export class StorageFile {
  * Main class used to access and manipulate the Firestore Storage folders. Inherit this class to extend with custom functionality as needed.
  */
 export class StorageFolder {
-  constructor(public path: string) {}
+  constructor(public app: admin.app.App, public path: string) {}
 
   async delete() {
-    return await bucket().deleteFiles({ prefix: `${this.path}/` });
+    return await this.app
+      .storage()
+      .bucket()
+      .deleteFiles({ prefix: `${this.path}/` });
   }
 
   file(name: string) {
-    return new StorageFile(`${this.path}/${name}`);
+    return new StorageFile(this.app, `${this.path}/${name}`);
   }
 
   async getUniqueFileName(name: string) {
-    return await getUniqueFileName(`${this.path}/${name}`);
+    return await getUniqueFileName(this.app, `${this.path}/${name}`);
   }
 }
 
@@ -59,7 +62,7 @@ export class StorageFolder {
  * @param fileWithPath Full path to the file.
  * @returns string path with a unique file name at the specified path.
  */
-export const getUniqueFileName = async (fileWithPath: string): Promise<string> => {
+export const getUniqueFileName = async (app: admin.app.App, fileWithPath: string): Promise<string> => {
   const pathArray = fileWithPath.split("/");
   const originalFileName = pathArray.pop();
   if (!originalFileName) throw new Error("Can't check if file name is unique. Invalid file path.");
@@ -70,17 +73,9 @@ export const getUniqueFileName = async (fileWithPath: string): Promise<string> =
   let fileName = parsed.name;
 
   let step = 0;
-  while ((await bucket().file(`${filePath}/${fileName}${fileExtension}`).exists())[0]) {
+  while ((await app.storage().bucket().file(`${filePath}/${fileName}${fileExtension}`).exists())[0]) {
     step++;
     fileName = `${fileName}-${step}`;
   }
   return `${fileName}${fileExtension}`;
-};
-
-const bucket = () => {
-  if (admin.apps.length > 0) {
-    return admin.app().storage().bucket();
-  }
-
-  throw new Error("Firebase app is not initialized. Please initialize Firebase first.");
 };

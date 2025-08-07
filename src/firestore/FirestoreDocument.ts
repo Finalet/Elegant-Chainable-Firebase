@@ -9,8 +9,8 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
   ref: DocumentReference<DocumentData, DocumentData>;
   collection: CollectionReference<DocumentData, DocumentData>;
 
-  constructor(documentPath: string, childNode: FirestoreSchemaNode) {
-    this.ref = firestore().doc(documentPath);
+  constructor(public app: admin.app.App, documentPath: string, childNode: FirestoreSchemaNode) {
+    this.ref = app.firestore().doc(documentPath);
     this.collection = this.ref.parent;
 
     this.buildClass(documentPath, childNode);
@@ -20,7 +20,7 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
     Object.entries(childNode).forEach(([key, node]) => {
       if (typeof node === "object" && node !== null && "doc" in node) {
         const docClass = node.class || FirestoreDocument;
-        (this as any)[node.doc] = (id: string) => new docClass(`${documentPath}/${key}/${id}`, node as FirestoreSchemaNode);
+        (this as any)[node.doc] = (id: string) => new docClass(this.app, `${documentPath}/${key}/${id}`, node as FirestoreSchemaNode);
       }
     });
   }
@@ -35,7 +35,7 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
   }
 
   async delete(recursive: boolean = false) {
-    if (recursive) firestore().recursiveDelete(this.ref);
+    if (recursive) this.app.firestore().recursiveDelete(this.ref);
     else await this.ref.delete();
   }
 
@@ -95,11 +95,3 @@ function convertTimestampsToDates(data: admin.firestore.DocumentData) {
     }
   }
 }
-
-const firestore = () => {
-  if (admin.apps.length > 0) {
-    return admin.app().firestore();
-  }
-
-  throw new Error("Firebase app is not initialized. Please initialize Firebase first.");
-};
