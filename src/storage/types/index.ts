@@ -1,1 +1,1 @@
-export { StorageSchema, StorageSchemaNode, StorageDatabase } from "./StorageTypes";
+export { StorageSchema, StorageSchemaNode, StorageDatabase, FolderDescriptor, FileDescriptor } from "./StorageTypes";

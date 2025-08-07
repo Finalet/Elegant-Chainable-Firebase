@@ -1,5 +1,7 @@
+import admin from "firebase-admin";
 import { StorageFile, StorageFolder } from "./StorageFileFolder";
-import { StorageSchema, StorageSchemaNode } from "./types/StorageTypes";
+import { StorageSchemaNode } from "./types";
+import { FileDescriptor, FolderDescriptor, StorageDatabase, StorageSchema } from "./types/StorageTypes";
 
 /**
  * Helper function for defining the Firebase Storage schema for a file.
@@ -7,22 +9,26 @@ import { StorageSchema, StorageSchemaNode } from "./types/StorageTypes";
  * @param Class (Optional) A Class that inherits StorageFolder. Used this to repalce the default class with your own to extend functionality as needed.
  * @param children (Optional) Schema for child files that this folder contains.
  */
-export function folder<T extends Record<string, StorageSchemaNode>>(path: string, children?: T): StorageFolder & T;
-export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, Class: new (...args: any[]) => C, children?: T): C & T;
-export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, ClassOrChildren?: (new (...args: any[]) => C) | T, maybeChildren?: T): C & T {
+export function folder<T extends Record<string, StorageSchemaNode>>(path: string): FolderDescriptor<StorageFolder, T>;
+export function folder<T extends Record<string, StorageSchemaNode>>(path: string, children: T): FolderDescriptor<StorageFolder, T>;
+export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, Class: new (app: admin.app.App, path: string, ...args: any[]) => C, children: T): FolderDescriptor<C, T>;
+export function folder<T extends Record<string, StorageSchemaNode>, C extends StorageFolder>(path: string, ClassOrChildren?: (new (app: admin.app.App, path: string, ...args: any[]) => C) | T, maybeChildren?: T): FolderDescriptor<C, T> {
   let Class: new (...args: any[]) => C = StorageFolder as any;
   let children: T | undefined;
 
   if (typeof ClassOrChildren === "function") {
     Class = ClassOrChildren;
-    children = maybeChildren;
+    children = maybeChildren ?? ({} as T);
   } else {
-    children = ClassOrChildren;
+    children = ClassOrChildren ?? ({} as T);
   }
 
-  const folder = new Class(path);
-  Object.assign(folder, children);
-  return folder as C & T;
+  return {
+    __type: "folder",
+    path,
+    class: Class,
+    children,
+  } as any;
 }
 
 /**
@@ -31,8 +37,50 @@ export function folder<T extends Record<string, StorageSchemaNode>, C extends St
  * @param Class (Optional) A Class that inherits StorageFile. Used this to repalce the default class with your own to extend functionality as needed.
  * @returns
  */
-export function file<T extends StorageFile>(path: string, Class: new (...args: any[]) => T = StorageFile as any) {
-  return new Class(path);
+export function file<T extends StorageFile>(path: string, Class: new (app: admin.app.App, path: string, ...args: any[]) => T = StorageFile as any): FileDescriptor {
+  return {
+    __type: "file",
+    path,
+    class: Class,
+  };
+}
+
+function processNode(app: admin.app.App, node: StorageSchemaNode, parentPath: string) {
+  if (typeof node === "function") {
+    return (path: string) => {
+      return processDescriptor(app, node(path), parentPath);
+    };
+  } else {
+    return processFolderDescriptor(app, node, parentPath);
+  }
+}
+
+function processFolderDescriptor(app: admin.app.App, descriptor: FolderDescriptor<StorageFolder, Record<string, StorageSchemaNode>>, parentPath: string): StorageFolder {
+  const fullPath = normalizePath(`${parentPath}/${descriptor.path}`);
+  const folder = new descriptor.class(app, fullPath);
+  if (descriptor.children) {
+    for (const key in descriptor.children) {
+      (folder as any)[key] = processNode(app, descriptor.children[key], fullPath);
+    }
+  }
+  return folder;
+}
+
+function processFileDescriptor(app: admin.app.App, descriptor: FileDescriptor, parentPath: string): StorageFile {
+  const fullPath = normalizePath(`${parentPath}/${descriptor.path}`);
+  return new descriptor.class(app, fullPath);
+}
+
+function processDescriptor(app: admin.app.App, descriptor: FileDescriptor | FolderDescriptor<StorageFolder, Record<string, StorageSchemaNode>>, parentPath: string) {
+  if (descriptor.__type === "folder") {
+    return processFolderDescriptor(app, descriptor, parentPath);
+  } else {
+    return processFileDescriptor(app, descriptor, parentPath);
+  }
+}
+
+function normalizePath(path: string): string {
+  return path.replace(/\/+/g, "/").replace(/\/$/, ""); // collapse slashes and remove trailing
 }
 
 /**
@@ -49,47 +97,10 @@ export function buildStorageSchema<T extends StorageSchema>(schema: T) {
  * @param schema Your Firebase Storage schema.
  * @returns An object for accessing Firebase Storage.
  */
-export function initializeStorage<TSchema extends StorageSchema>(schema: TSchema): TSchema {
-  const result: TSchema = {} as TSchema;
+export function initializeStorage<T extends StorageSchema>(app: admin.app.App, schema: T): StorageDatabase<T> {
+  const result = {} as StorageDatabase<T>;
   for (const key in schema) {
-    result[key] = processNode(schema[key], "") as TSchema[typeof key];
+    result[key] = processNode(app, schema[key], "") as StorageDatabase<T>[typeof key];
   }
-  return result as TSchema;
-}
-
-function processNode(node: StorageSchemaNode, parentPath: string): StorageSchemaNode {
-  if (typeof node === "function") {
-    return (path: string) => {
-      const result = node(path);
-      result.path = normalizePath(`${parentPath}/${result.path}`);
-      if (result instanceof StorageFolder) {
-        processFolder(result, result.path);
-      }
-      return result;
-    };
-  } else if (node instanceof StorageFolder) {
-    node.path = normalizePath(`${parentPath}/${node.path}`);
-    processFolder(node, node.path);
-    return node;
-  } else if (typeof node === "object") {
-    const newObj: Record<string, StorageSchemaNode> = {};
-    for (const key in node) {
-      newObj[key] = processNode(node[key], parentPath);
-    }
-    return newObj;
-  } else {
-    return node;
-  }
-}
-
-function processFolder(folder: StorageFolder, currentPath: string) {
-  for (const key of Object.keys(folder)) {
-    const child = (folder as any)[key];
-    const processedChild = processNode(child, currentPath);
-    (folder as any)[key] = processedChild;
-  }
-}
-
-function normalizePath(path: string): string {
-  return path.replace(/\/+/g, "/").replace(/\/$/, ""); // collapse slashes and remove trailing
+  return result;
 }
