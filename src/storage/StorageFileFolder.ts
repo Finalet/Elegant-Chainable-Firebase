@@ -1,5 +1,5 @@
 import admin from "firebase-admin";
-import { DownloadOptions, File, SaveOptions } from "@google-cloud/storage";
+import { DownloadOptions, File, SaveData, SaveOptions } from "@google-cloud/storage";
 import { getDownloadURL } from "firebase-admin/storage";
 import nodePath from "path";
 
@@ -13,15 +13,15 @@ export class StorageFile {
     this.file = this.app.storage().bucket().file(path);
   }
 
-  async upload(fileBuffer: Buffer, options?: SaveOptions) {
-    return await this.file.save(fileBuffer, options);
+  async upload(data: SaveData, options?: SaveOptions) {
+    return await this.file.save(data, options);
   }
 
   async delete() {
     return await this.file.delete();
   }
 
-  async download(options: DownloadOptions) {
+  async download(options?: DownloadOptions) {
     const [buffer] = await this.file.download(options);
     return buffer;
   }
@@ -50,6 +50,10 @@ export class StorageFolder {
 
   file(name: string) {
     return new StorageFile(this.app, `${this.path}/${name}`);
+  }
+
+  subFolder(path: string) {
+    return new StorageFolder(this.app, `${this.path}/${path}`);
   }
 
   async getUniqueFileName(name: string) {
