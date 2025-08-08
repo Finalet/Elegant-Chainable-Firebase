@@ -10,7 +10,7 @@ Try [Pressdeck](https://pressdeck.io/?utm_source=elegant_chainable_firebase). Ge
 
 ## 🤔 About
 
-Elegant Chainable Firebase 🫦🥵👅💦 is a Firebase Admin SDK wrapper that removes the hasle of manually typing and keeping track of your Firestore collections and documents. Elegant Chainable Firebase provides a simple, chainable, fully typed API with convenient access to manipulate your data.
+Elegant Chainable Firebase 🫦🥵💦 is a Firebase Admin SDK wrapper that removes the hasle of manually typing and keeping track of your Firestore collections and documents. Elegant Chainable Firebase provides a simple, chainable, fully typed API with convenient access to manipulate your data.
 
 ## 💻 Installation
 
@@ -22,9 +22,9 @@ npm i elegant-chainable-firebase
 
 ## 🏁 Quick Start
 
-Eager to start? I know you can't handle reading this whole guide, so I pilled it all up into this one code block. So gracious.
+I know you can't handle reading this whole guide, so I pilled it all up into this one code block. So gracious.
 
-```javascript
+```typescript
 import { buildFirestoreSchema, initializeFirestore, DefineDocumentTypes } from "elegant-chainable-firebase/firestore";
 import admin from "firebase-admin";
 
@@ -33,7 +33,7 @@ const app = admin.initializeApp(); // Your instance of the Firebase Admin SDK
 const schema = buildFirestoreSchema({
   users: {
     doc: "user",
-  }
+  },
 } as const);
 
 type DocumentDefinitions = DefineDocumentTypes<typeof schema, {
@@ -56,34 +56,34 @@ Imagine, you have the following Firestore setup:
 ```
 users (collection)
 └── {userID} (document)
-    └── tasks (collection)
+    └── tasks (sub-collection)
         └── {taskID} (document)
 ```
 
 Use `buildFirestoreSchema` helper function to construct your schema with IntelliSense suggestions and TypeScript safety.
 
-```javascript
+```typescript
 import { buildFirestoreSchema } from "elegant-chainable-firebase/firestore";
 
 const schema = buildFirestoreSchema({
-  users: {            // collection name
-    doc: "user",      // convenient name to access documents in this collection
+  users: {          // collection name
+    doc: "user",    // convenient name to access documents in this collection
     tasks: {
-      doc: "task"
-    }
-  }
+      doc: "task",
+    },
+  },
 } as const);
 ```
 
-Notice, how the collections are `users` and `tasks`, but we also set their keys `doc` to `user` and `task` respectively. Why? To make life harder for me to develop this library, of course. Coincidentally though, this creates a more intuitive interface to interact with Firestore.
+Notice, how the collections are `users` and `tasks`, but we also set their keys `doc` to `user` and `task` respectively. Why? To make life harder developing this library, of course. Coincidentally, this creates a more intuitive interface to interact with Firestore.
 
-Because of it, you are able to access your documents using singular language, which makes most sense:
+Because of it, you are able to access your documents using singular language, which makes more sense:
 
-```javascript
-// Fetch document at `users/${userID}`
+```typescript
+// Fetches document at `users/${userID}`
 const user = await firestore.user(userID).fetch();
 
-// Fetch document at `users/${userID}/tasks/${taskID}`
+// Fetches document at `users/${userID}/tasks/${taskID}`
 const task = await firestore.user(userID).task(taskID).fetch();
 ```
 
@@ -93,42 +93,42 @@ const task = await firestore.user(userID).task(taskID).fetch();
 
 Imagine fetching your data and getting fucking `DocumentSnapshot<DocumentData, DocumentData>` in return? Imagine that you also need to run `docSnapshot.data()` afterwards to get the actuall data? Literally psychotic.
 
-If only you could get the document data with the exact TypeScript interface representation in just one call... Well, now you can!
+If only you could get the document data with the exact TypeScript interface representation in just one call...
 
-Define a new TypeScript type listing your documents with their corresponding interfaces. I even created a cute little type you can extends `DefineDocumentTypes` which will provide IntelliSense suggestions from your schema!
+Define a new TypeScript type listing your documents with their corresponding interfaces. I even created a cute little helper type you can extend, `DefineDocumentTypes`, which will provide IntelliSense suggestions from your schema!
 
-```javascript
+```typescript
 import { DefineDocumentTypes } from "elegant-chainable-firebase/firestore";
 
 const schema = buildFirestoreSchema(...)
 
 type DocumentDefinitions = DefineDocumentTypes<typeof schema, {
-    user: User,
-    task: Task,
+  user: User,
+  task: Task,
 }>;
 ```
 
-Now, simply pass an **empty object of this type** (little psychotic, I know) to `initializeFirestore` and the database will be fully aware of the objects within in!
+Now, simply pass an **empty object of this type** (deranged, I know) to `initializeFirestore` and the database will be fully aware of the objects within it!
 
-```javascript
+```typescript
 const firestore = initializeFirestore(app, schema, {} as DocumentDefinitions);
 
 // Returns an object of type `User`
-const user: User = firestore.user(userID).fetch()
+const user: User = firestore.user(userID).fetch();
 
 // updateField() now only accepts available fields inside `Task`
-const task: Task = firestore.user(userID).task(taskID).updateField("name")
+const task: Task = firestore.user(userID).task(taskID).updateField("name");
 ```
 
-Notice, that every key in our `DocumentDefinitions` type correspond to the names of each `doc` in our schema. This is important and makes sense.
+Notice, that every key in `DocumentDefinitions` correspond to the names of each `doc` in the schema. This is important and makes sense.
 
-> **🤤 Lessons learned:** Google developers are mental, jump scaring us with `DocumentSnapshot` when we just need the data. Use `DefineDocumentTypes` to safely declare types for your documents.
+> **🤤 Lessons learned:** Google developers are mental, jump-scaring us with `DocumentSnapshot` when we just need the data. Use `DefineDocumentTypes` to safely declare types for your documents.
 
 ### 3. Initialize database
 
 Finally, bazinga! Simply pass your schema and type definitions to `initializeFirestore` alongside your Firebase Admin SDK app instance: in the stuff goes, out the API comes.
 
-```javascript
+```typescript
 import { initializeFirestore, DefineDocumentTypes } from "elegant-chainable-firebase/firestore";
 import admin from "firebase-admin";
 
@@ -141,20 +141,20 @@ const firestore = initializeFirestore(app, schema, {} as DocumentDefinitions);
 
 ### 4. Use it
 
-```javascript
-// Fetch user document properly typed
+```typescript
+// Fetch a properly typed user document
 const user: User = await firestore.user(userID).fetch();
 
-// Save full user object
+// Save a full user object
 await firestore.user(userID).save(userData);
 
-// Update only user's name field to "Looser"
+// Update only the user's name field to "Looser"
 await firestore.user(userID).updateField("name", "Looser");
 
-// Delete user object
+// Delete a user object
 await firestore.user(userID).delete();
 
-// Check if user object exists
+// Check if the user object exists
 await firestore.user(userID).exists();
 ```
 
@@ -162,7 +162,7 @@ await firestore.user(userID).exists();
 
 Obviously, you are much cooler than me. So, you have methods that you need to perform safely on your data. Extend my `FirestoreDocument` class with your custom methods and include it in the schema as a `class` key.
 
-```javascript
+```typescript
 import { FirestoreDocument } from "elegant-chainable-firebase/firestore";
 
 interface User {
@@ -177,8 +177,8 @@ class UserFirestoreDocument extends FirestoreDocument<User> {
   }
 
   async generateToken() {
-    const token = getToken() // some mock function
-    await this.updateField("token", token)
+    const token = MockCrypto.getToken();
+    await this.updateField("token", token);
     return token;
   }
 }
@@ -187,15 +187,15 @@ const schema = buildFirestoreSchema({
   users: {
     doc: "user",
     class: UserFirestoreDocument,
-  }
+  },
 } as const);
 ```
 
-Now, your extended class will be used insted. This is the recommended way of setting up Elegant Chainable Firebase, having dedicated classes for each document with custom methods manipulating data as you need.
+Now, your extended class will be used for the `user` documents. This is the recommended way of setting up Elegant Chainable Firebase. Having dedicated classes with custom methods manipulating data for each document is pretty cool.
 
-```javascript
+```typescript
 await firestore.user(userID).levelUp(420);
-await firestore.user(userID).generateToken();
+const token = await firestore.user(userID).generateToken();
 ```
 
 > **🤤 Lessons learned:** Please, please, please, extend functionality of `FirestoreDocument` to craft the perfect API for your own use case.
