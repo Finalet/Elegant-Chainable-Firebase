@@ -1,3 +1,10 @@
+## [0.2.8](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.7...v0.2.8) (2025-08-08)
+
+
+### Bug Fixes
+
+* firestore types fix ([d084777](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/d084777b17ee685beb24f99bb8d4649c91891bd9))
+
 ## [0.2.7](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.6...v0.2.7) (2025-08-07)
 
 
