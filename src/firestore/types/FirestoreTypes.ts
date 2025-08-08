@@ -40,14 +40,14 @@ type InferClassInstance<TNode extends FirestoreSchemaNode, TTypesMap extends Fir
   : FirestoreDocument<InferDocData<TNode, TTypesMap>>;
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-type FirestoreAPI<TNode extends FirestoreSchemaNode, TTypesMap extends FirestoreSchemaTypes> = TNode extends { doc: infer DocName extends keyof TTypesMap }
+type FirestoreAPI<TNode extends FirestoreSchemaNode, TTypesMap extends FirestoreSchemaTypes> = TNode extends { doc: infer DocName }
   ? (id: string) => InferClassInstance<TNode, TTypesMap> & {
       [K in keyof TNode as K extends "doc" | "class" ? never : TNode[K] extends FirestoreSchemaNode ? TNode[K]["doc"] : never]: TNode[K] extends FirestoreSchemaNode ? FirestoreAPI<TNode[K], TTypesMap> : never;
     }
   : never;
 
 export type FirestoreDatabase<TSchema extends FirestoreSchema, TTypesMap extends FirestoreSchemaTypes> = {
-  [K in keyof TSchema as TSchema[K]["doc"] extends keyof TTypesMap ? TSchema[K]["doc"] : never]: FirestoreAPI<TSchema[K], TTypesMap>;
+  [K in keyof TSchema as TSchema[K]["doc"]]: FirestoreAPI<TSchema[K], TTypesMap>;
 };
 
 // --- FirebaseDocument.updateField() types ---
