@@ -22,7 +22,7 @@ npm i elegant-chainable-firebase
 
 ## 🏁 Quick Start
 
-I know you can't handle reading this whole guide, so I pilled it all up into this one code block. So gracious.
+I know you can't handle reading this whole guide, so I pilled it all up into this one chunk of code. So gracious.
 
 ```typescript
 import { buildFirestoreSchema, initializeFirestore, DefineDocumentTypes } from "elegant-chainable-firebase/firestore";
@@ -87,7 +87,7 @@ const user = await firestore.user(userID).fetch();
 const task = await firestore.user(userID).task(taskID).fetch();
 ```
 
-> **🤤 Lessons learned:** Schema keys represent collection names, while their child key `doc` defines a convenient name to access documents in this collection.
+> **🫦 Lessons learned:** Schema keys represent collection names, while their child key `doc` defines a convenient name to access documents in this collection.
 
 ### 2. Provide document types
 
@@ -108,7 +108,7 @@ type DocumentDefinitions = DefineDocumentTypes<typeof schema, {
 }>;
 ```
 
-Now, simply pass an **empty object of this type** (deranged, I know) to `initializeFirestore` and the database will be fully aware of the objects within it!
+Now, simply pass an **empty object of this type** (diabolical, I know) to `initializeFirestore` and the database will be fully aware of the objects within it!
 
 ```typescript
 const firestore = initializeFirestore(app, schema, {} as DocumentDefinitions);
@@ -122,7 +122,7 @@ const task: Task = firestore.user(userID).task(taskID).updateField("name");
 
 Notice, that every key in `DocumentDefinitions` correspond to the names of each `doc` in the schema. This is important and makes sense.
 
-> **🤤 Lessons learned:** Google developers are mental, jump-scaring us with `DocumentSnapshot` when we just need the data. Use `DefineDocumentTypes` to safely declare types for your documents.
+> **🫦 Lessons learned:** Google developers are mental, jump-scaring us with `DocumentSnapshot` when we just need the data. Use `DefineDocumentTypes` to safely declare types for your documents.
 
 ### 3. Initialize database
 
@@ -198,7 +198,7 @@ await firestore.user(userID).levelUp(420);
 const token = await firestore.user(userID).generateToken();
 ```
 
-> **🤤 Lessons learned:** Please, please, please, extend functionality of `FirestoreDocument` to craft the perfect API for your own use case.
+> **🫦 Lessons learned:** Please, please, please, extend functionality of `FirestoreDocument` to craft the perfect API for your own use case.
 
 ## Storage Usage
 
