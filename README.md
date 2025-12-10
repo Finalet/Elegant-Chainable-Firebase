@@ -22,6 +22,9 @@ Elegant Chainable Firebase 🫦🥵💦 is a Firebase Admin SDK wrapper that rem
     5. [Extend Firestore functionality](#5-extend-firestore-functionality)
 4. [Storage Usage](#storage-usage)
     1. [Define schema](#1-define-storage-schema)
+    2. [Initialize Storage database](#2-initialize-storage-database)
+    3. [Use Storage database](#3-use-storage-database)
+    4. [Extend Storage functionality](#4-extend-storage-functionality)
 
 
 ## 💻 Installation

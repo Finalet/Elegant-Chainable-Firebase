@@ -56,7 +56,7 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
     });
 
     if (shouldDelete && deleteIfEmpty && deleteEmptyParents) {
-      // Checking if after deletion the parent object is empty. If yes, then delete it too.
+      // Checking if after deletion the parent object is empty. If yes, delete it too.
       const pathSegments = field.split(".").slice(0, -1);
       for (let i = 0; i < pathSegments.length; i++) {
         const checkingPath = pathSegments.slice(0, pathSegments.length - i).join(".");
