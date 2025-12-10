@@ -26,7 +26,7 @@ export function initializeFirestore<TSchema extends FirestoreSchema, TTypesMap e
   Object.entries(schema).forEach(([key, node]) => {
     if (typeof node === "object" && node !== null && "doc" in node) {
       const docClass = node.class || FirestoreDocument;
-      api[node.doc] = (id: string) => new docClass(app, `${key}/${id}`, node as FirestoreSchemaNode);
+      api[node.doc] = (id: string | null) => new docClass(app, `${key}/${id}`, node as FirestoreSchemaNode);
     }
   });
   return api;

@@ -41,7 +41,7 @@ type InferClassInstance<TNode extends FirestoreSchemaNode, TTypesMap extends Fir
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 type FirestoreAPI<TNode extends FirestoreSchemaNode, TTypesMap extends FirestoreSchemaTypes> = TNode extends { doc: infer DocName }
-  ? (id: string) => InferClassInstance<TNode, TTypesMap> & {
+  ? (id: string | null) => InferClassInstance<TNode, TTypesMap> & {
       [K in keyof TNode as K extends "doc" | "class" ? never : TNode[K] extends FirestoreSchemaNode ? TNode[K]["doc"] : never]: TNode[K] extends FirestoreSchemaNode ? FirestoreAPI<TNode[K], TTypesMap> : never;
     }
   : never;

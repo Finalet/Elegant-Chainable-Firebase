@@ -30,6 +30,11 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
     return objectFromFirestoreDoc<T>(doc);
   }
 
+  async fetchAll(): Promise<T[]> {
+    const snapshot = await this.collection.get();
+    return snapshot.docs.map((doc) => objectFromFirestoreDoc<T>(doc));
+  }
+
   async save(object: T) {
     await this.ref.set(object);
   }
