@@ -1,3 +1,10 @@
+## [0.3.3](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.3.2...v0.3.3) (2025-12-10)
+
+
+### Bug Fixes
+
+* fixed bug where date where erroneously deleted inside doc.updateField ([aa1990c](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/aa1990c852623e878b23172be0cc4dbd33695a6f))
+
 ## [0.3.2](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.3.1...v0.3.2) (2025-12-10)
 
 
