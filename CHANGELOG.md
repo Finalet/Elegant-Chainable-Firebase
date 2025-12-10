@@ -1,3 +1,10 @@
+## [0.3.1](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.3.0...v0.3.1) (2025-12-10)
+
+
+### Bug Fixes
+
+* comment change to trigger npm release ([6fda88c](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/6fda88c929154b79d06c4c8d3bc17d05dd2c58a9))
+
 # [0.3.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.8...v0.3.0) (2025-12-10)
 
 
