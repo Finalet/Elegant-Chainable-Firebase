@@ -1,3 +1,10 @@
+# [0.3.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.8...v0.3.0) (2025-12-10)
+
+
+### Features
+
+* Added fetchAll() to FirestoreDocument ([283dcf5](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/283dcf5d4c5d847857466f1c5a4ff5dbf3f2396e))
+
 ## [0.2.8](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.2.7...v0.2.8) (2025-08-08)
 
 
