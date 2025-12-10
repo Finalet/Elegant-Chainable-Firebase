@@ -1,9 +1,5 @@
 name: Release
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
 on:
   push:
     branches:
@@ -22,6 +18,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  id-token: write
 
 jobs:
   release:
@@ -29,20 +26,30 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
+
+      - name: Update npm
+        run: npm install -g npm@latest
+
       - name: Install dependencies
         run: npm ci
+
       - name: Build
         run: npm run build
+
       - name: Audit
         run: npm audit signatures
+
       - name: Release via Semantic Release
         uses: cycjimmy/semantic-release-action@v4
         with:
-          semantic_version: 24
+          semantic_version: 25.0.1
           extra_plugins: |
             @semantic-release/changelog@6
             @semantic-release/git@10
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
