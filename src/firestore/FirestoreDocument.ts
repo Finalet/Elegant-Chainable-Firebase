@@ -50,12 +50,14 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
   }
 
   async updateField<K extends FieldsOf<T>>(field: K, value: FieldTypeAtPath<T, K>, deleteIfEmpty: boolean = true, deleteEmptyParents: boolean = true) {
-    const shouldDelete = !value || (Array.isArray(value) && value.length === 0) || (typeof value === "object" && Object.keys(value).length === 0);
+    const isDate = typeof value.getMonth === "function" && typeof value.getFullYear === "function" && typeof value.getDate === "function";
+    const isEmpty = !value || (Array.isArray(value) && value.length === 0) || (typeof value === "object" && Object.keys(value).length === 0 && !isDate);
+
     await this.ref.update({
-      [field]: shouldDelete && deleteIfEmpty ? admin.firestore.FieldValue.delete() : value,
+      [field]: isEmpty && deleteIfEmpty ? admin.firestore.FieldValue.delete() : value,
     });
 
-    if (shouldDelete && deleteIfEmpty && deleteEmptyParents) {
+    if (isEmpty && deleteIfEmpty && deleteEmptyParents) {
       // Checking if after deletion the parent object is empty. If yes, delete it too.
       const pathSegments = field.split(".").slice(0, -1);
       for (let i = 0; i < pathSegments.length; i++) {
