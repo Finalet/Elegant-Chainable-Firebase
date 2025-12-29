@@ -12,6 +12,18 @@ Try [Pressdeck](https://pressdeck.io/?utm_source=elegant_chainable_firebase). Ge
 
 Elegant Chainable Firebase 🫦🥵💦 is a Firebase Admin SDK wrapper that removes the hasle of manually typing and keeping track of your Firestore collections and documents. Elegant Chainable Firebase provides a simple, chainable, fully typed API with convenient access to manipulate your data.
 
+Here is a little taste. Want to update user's name field? Just do:
+
+```javascript
+await firestore.user(userID).updateField("name", "Sucker"); // ← Type safe `key` and `value` fields
+```
+
+Want to download a document that belogs to a specific user? Here ya go:
+
+```javascript 
+const document = await firestore.user(userID).document(docID).fetch() // ← Fetches document from `user/{userID}/documents/{documentID}`
+```
+
 1. [Installation](#-installation)
 2. [Quick Start](#-quick-start)
 3. [Firestore Usage](#-firestore-usage)
