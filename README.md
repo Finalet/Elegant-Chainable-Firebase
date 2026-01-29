@@ -285,6 +285,9 @@ await Storage.user(userID).image(fileName).delete();
 // Download file
 await Storage.user(userID).image(fileName).download();
 
+// Check if file exists
+await Storage.user(userID).image(fileName).exists();
+
 // Get download URL
 await Storage.user(userID).image(fileName).getDownloadUrl();
 

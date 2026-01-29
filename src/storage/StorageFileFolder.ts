@@ -26,6 +26,11 @@ export class StorageFile {
     return buffer;
   }
 
+  async exists() {
+    const array = await this.file.exists()
+    return array[0];
+  }
+
   async getDownloadUrl() {
     return await getDownloadURL(this.file);
   }
