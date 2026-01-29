@@ -270,7 +270,7 @@ import admin from "firebase-admin"
 const app = admin.initializeApp();
 
 const schema = buildStorageSchema(...)
-const Storage = initializeStorage(app, storageSchema);
+const Storage = initializeStorage(app, schema);
 ```
 
 ### 3. Use Storage database
