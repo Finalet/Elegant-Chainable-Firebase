@@ -1,3 +1,10 @@
+# [0.4.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.3.3...v0.4.0) (2026-01-29)
+
+
+### Features
+
+* added exists() method to Storage File ([f38bfe8](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/f38bfe8904bdcb48f6bc3321cdf49dadabc3302b))
+
 ## [0.3.3](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.3.2...v0.3.3) (2025-12-10)
 
 
