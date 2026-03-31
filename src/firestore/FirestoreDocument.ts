@@ -50,7 +50,7 @@ export class FirestoreDocument<T extends { [key: string]: any }> {
   }
 
   async updateField<K extends FieldsOf<T>>(field: K, value: FieldTypeAtPath<T, K>, deleteIfEmpty: boolean = true, deleteEmptyParents: boolean = true) {
-    const isDate = typeof value.getMonth === "function" && typeof value.getFullYear === "function" && typeof value.getDate === "function";
+    const isDate = !!value && typeof value.getMonth === "function" && typeof value.getFullYear === "function" && typeof value.getDate === "function";
     const isEmpty = !value || (Array.isArray(value) && value.length === 0) || (typeof value === "object" && Object.keys(value).length === 0 && !isDate);
 
     await this.ref.update({
