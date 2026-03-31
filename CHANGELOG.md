@@ -1,3 +1,10 @@
+## [0.4.1](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.4.0...v0.4.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* passing falsy values to updateField no longer crashes due to date type check ([0fdcc4a](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/0fdcc4a6e3f9fad8756bc4883b329ca24ae7b2f9))
+
 # [0.4.0](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.3.3...v0.4.0) (2026-01-29)
 
 
