@@ -91,7 +91,8 @@ function isFirestoreTimestamp(obj: any): obj is { _seconds: number; _nanoseconds
 function firestoreTimestampToDate(timestamp: { _seconds: number; _nanoseconds: number }) {
   return new Date(timestamp._seconds * 1000 + timestamp._nanoseconds / 1000000);
 }
-function convertTimestampsToDates(data: admin.firestore.DocumentData) {
+
+export function convertTimestampsToDates(data: admin.firestore.DocumentData) {
   for (const key in data) {
     const value = data[key];
 
