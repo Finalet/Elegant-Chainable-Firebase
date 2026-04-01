@@ -1,3 +1,10 @@
+## [0.4.2](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.4.1...v0.4.2) (2026-04-01)
+
+
+### Bug Fixes
+
+* Export convertTimestampsToDates for public use ([12d2933](https://github.com/Finalet/Elegant-Chainable-Firebase/commit/12d2933c6af6d817baf1e9dc8b81c5722e39389d))
+
 ## [0.4.1](https://github.com/Finalet/Elegant-Chainable-Firebase/compare/v0.4.0...v0.4.1) (2026-03-31)
 
 
